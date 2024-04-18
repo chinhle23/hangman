@@ -1,0 +1,32 @@
+--- !ruby/object:Hangman::Game
+game_id: 2024-04-18-13:36:16
+secret_word: investor
+available_letters:
+- b
+- c
+- d
+- e
+- f
+- g
+- h
+- j
+- k
+- l
+- m
+- o
+- p
+- q
+- r
+- s
+- t
+- u
+- v
+- w
+- x
+- "y"
+- z
+guessed_letters:
+- a
+- "n"
+- i
+incorrect_guesses_remaining: 5
