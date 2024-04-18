@@ -67,26 +67,7 @@ module Hangman
           puts "#{@incorrect_guesses_remaining} incorrect #{@incorrect_guesses_remaining > 1 ? "guesses" : "guess"} remaining"
         end
         p display_word(@secret_word)
-        loop do
-          puts 'Quit and save game? (y/n)'
-          begin
-            answer = gets.chomp.downcase
-            raise unless answer == 'y' || answer == 'n'
-          rescue StandardError
-            puts "Invalid input! Enter 'y' to quit and save or 'n' to continue..."
-          else
-            if answer == 'y'
-              Dir.mkdir('game_saves') unless Dir.exist?('game_saves')
-              filename = "game_saves/#{@game_id}.yaml"
-              File.open(filename, 'w') do |file|
-                file.puts self.to_yaml
-              end
-              exit
-            else
-              break
-            end
-          end
-        end
+        option_to_save
       end
     end
 
@@ -113,6 +94,29 @@ module Hangman
       word.each_char { |char| display.concat(@guessed_letters.include?(char) ? "#{char} " : "_ ") }
       display[-1] = ""
       display
+    end
+
+    def option_to_save
+      loop do
+        puts 'Quit and save game? (y/n)'
+        begin
+          answer = gets.chomp.downcase
+          raise unless answer == 'y' || answer == 'n'
+        rescue StandardError
+          puts "Invalid input! Enter 'y' to quit and save or 'n' to continue..."
+        else
+          if answer == 'y'
+            Dir.mkdir('game_saves') unless Dir.exist?('game_saves')
+            filename = "game_saves/#{@game_id}.yaml"
+            File.open(filename, 'w') do |file|
+              file.puts self.to_yaml
+            end
+            exit
+          else
+            break
+          end
+        end
+      end
     end
   end
 

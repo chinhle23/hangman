@@ -5,7 +5,6 @@ available_letters:
 - b
 - c
 - d
-- e
 - f
 - g
 - h
@@ -29,4 +28,5 @@ guessed_letters:
 - "n"
 - i
 - v
+- e
 incorrect_guesses_remaining: 5
