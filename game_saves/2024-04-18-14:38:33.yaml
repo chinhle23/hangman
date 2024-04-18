@@ -1,6 +1,6 @@
 --- !ruby/object:Hangman::Game
-game_id: 2024-04-18-13:30:58
-secret_word: shares
+game_id: 2024-04-18-14:38:33
+secret_word: scratch
 available_letters:
 - b
 - c
@@ -18,15 +18,15 @@ available_letters:
 - o
 - p
 - q
+- r
 - s
 - t
 - u
 - v
 - w
 - x
+- "y"
 - z
 guessed_letters:
 - a
-- "y"
-- r
-incorrect_guesses_remaining: 5
+incorrect_guesses_remaining: 6

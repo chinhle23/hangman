@@ -52,19 +52,21 @@ module Hangman
     def play
       p display_word(@secret_word)
       loop do
-        if !display_word(@secret_word).include?('_')
-          puts 'You win!'
-          return 
-        elsif @incorrect_guesses_remaining < 1
-          puts 'You lose!'
-          puts "The word was '#{@secret_word}'"
-          return 
-        elsif @secret_word.include?(guess_letter)
+        if @secret_word.include?(guess_letter)
           puts 'Correct Guess'
+          if !display_word(@secret_word).include?('_')
+            puts "\"#{display_word(@secret_word)}\" You win!"
+            end_game
+          end
         else
           @incorrect_guesses_remaining -= 1
           puts 'Incorrect Guess'
           puts "#{@incorrect_guesses_remaining} incorrect #{@incorrect_guesses_remaining > 1 ? "guesses" : "guess"} remaining"
+          if @incorrect_guesses_remaining < 1
+            puts 'You lose!'
+            puts "The word was '#{@secret_word}'"
+            end_game
+          end
         end
         p display_word(@secret_word)
         option_to_save
@@ -117,6 +119,15 @@ module Hangman
           end
         end
       end
+    end
+
+    def delete_game_save_file
+      File.delete("game_saves/#{@game_id}.yaml") if File.exist?("game_saves/#{@game_id}.yaml")
+    end
+
+    def end_game
+      delete_game_save_file
+      exit
     end
   end
 
