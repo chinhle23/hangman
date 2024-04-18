@@ -20,7 +20,6 @@ available_letters:
 - s
 - t
 - u
-- v
 - w
 - x
 - "y"
@@ -29,4 +28,5 @@ guessed_letters:
 - a
 - "n"
 - i
+- v
 incorrect_guesses_remaining: 5

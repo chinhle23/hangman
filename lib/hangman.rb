@@ -33,19 +33,7 @@ module Hangman
         if game_option == 'n'
           start_new_game
         elsif game_option == 's'
-          game_saves = Dir.entries('game_saves').slice(2..-1)
-          loop do
-            puts "Copy and paste a game to load #{game_saves}"
-            begin
-              game_save = gets.chomp.downcase
-              raise unless game_saves.include?(game_save)
-            rescue StandardError
-              puts 'Invalid input! Try again...'
-            else
-              game = self.from_yaml(File.open("game_saves/#{game_save}"), [Hangman::Game])
-              game.play
-            end
-          end
+          load_saved_game
         end
       end
     end
@@ -140,6 +128,22 @@ module Hangman
   def start_new_game
     secret_word = random_word('google-10000-english-no-swears.txt', 5, 12)
     Game.new(Time.now.to_s.gsub(' -0400', '').gsub(' ', '-'), secret_word, ('a'..'z').to_a, [], 6).play
+  end
+
+  def load_saved_game
+    game_saves = Dir.entries('game_saves').slice(2..-1)
+    loop do
+      puts "Copy and paste a game to load #{game_saves}"
+      begin
+        game_save = gets.chomp.downcase
+        raise unless game_saves.include?(game_save)
+      rescue StandardError
+        puts 'Invalid input! Try again...'
+      else
+        game = self.from_yaml(File.open("game_saves/#{game_save}"), [Hangman::Game])
+        game.play
+      end
+    end
   end
 end
 
