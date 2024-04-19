@@ -1,9 +1,10 @@
 # frozen_string_literal: true
+
 require 'yaml'
 
 # A YAML serializer
 module YAMLSerializable
-  def to_yaml 
+  def to_yaml
     obj = {}
     instance_variables.map do |var|
       obj[var] = instance_variable_get(var)
@@ -13,7 +14,7 @@ module YAMLSerializable
   end
 
   def from_yaml(string, permitted_classes)
-    YAML.load(string, permitted_classes: permitted_classes)
+    YAML.safe_load(string, permitted_classes: permitted_classes)
   end
 end
 
@@ -23,7 +24,7 @@ module Hangman
 
   def start
     loop do
-      puts "Start new game (n) or load saved game (s)?"
+      puts 'Start new game (n) or load saved game (s)?'
       begin
         game_option = gets.chomp.downcase
         raise unless game_option == 'n' || game_option == 's'
@@ -37,7 +38,7 @@ module Hangman
         end
       end
     end
-  end 
+  end
 
   # This houses the logics of the game
   class Game
@@ -54,7 +55,7 @@ module Hangman
       loop do
         if @secret_word.include?(guess_letter)
           puts 'Correct Guess'
-          if !display_word(@secret_word).include?('_')
+          unless display_word(@secret_word).include?('_')
             puts "\"#{display_word(@secret_word)}\" You win!"
             end_game
           end
@@ -93,8 +94,8 @@ module Hangman
 
     def display_word(word)
       display = String.new
-      word.each_char { |char| display.concat(@guessed_letters.include?(char) ? "#{char} " : "_ ") }
-      display[-1] = ""
+      word.each_char { |char| display.concat(@guessed_letters.include?(char) ? "#{char} " : '_ ') }
+      display[-1] = ''
       display
     end
 
@@ -107,16 +108,14 @@ module Hangman
         rescue StandardError
           puts "Invalid input! Enter 'y' to quit and save or 'n' to continue..."
         else
-          if answer == 'y'
-            Dir.mkdir('game_saves') unless Dir.exist?('game_saves')
-            filename = "game_saves/#{@game_id}.yaml"
-            File.open(filename, 'w') do |file|
-              file.puts self.to_yaml
-            end
-            exit
-          else
-            break
+          break unless answer == 'y'
+
+          Dir.mkdir('game_saves') unless Dir.exist?('game_saves')
+          filename = "game_saves/#{@game_id}.yaml"
+          File.open(filename, 'w') do |file|
+            file.puts to_yaml
           end
+          exit
         end
       end
     end
@@ -135,7 +134,7 @@ module Hangman
 
   def random_word(filename, min, max)
     dictionary = File.readlines(filename)
-    filtered = dictionary.map{ |word| word.chomp }.select{ |word| word.length >= min && word.length <= max }
+    filtered = dictionary.map(&:chomp).select { |word| word.length >= min && word.length <= max }
     last_index = filtered.length - 1
     filtered[rand(0..last_index)]
   end
@@ -155,7 +154,7 @@ module Hangman
       rescue StandardError
         puts 'Invalid input! Try again...'
       else
-        game = self.from_yaml(File.open("game_saves/#{game_save}"), [Hangman::Game])
+        game = from_yaml(File.open("game_saves/#{game_save}"), [Hangman::Game])
         game.play
       end
     end

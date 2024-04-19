@@ -1,0 +1,32 @@
+--- !ruby/object:Hangman::Game
+game_id: 2024-04-19-06:20:15
+secret_word: pricing
+available_letters:
+- b
+- c
+- d
+- f
+- h
+- j
+- k
+- l
+- m
+- o
+- p
+- q
+- r
+- s
+- t
+- u
+- v
+- w
+- x
+- "y"
+guessed_letters:
+- a
+- "n"
+- e
+- g
+- i
+- z
+incorrect_guesses_remaining: 3
